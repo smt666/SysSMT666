@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--configuration
+    (properties?, settings?, typeAliases?, typeHandlers?, objectFactory?,
+     objectWrapperFactory?, reflectorFactory?, plugins?, environments?,
+     databaseIdProvider?, mappers?)-->
+
+    <settings>
+        <!--自动映射驼峰规则-->
+        <!--<setting name="mapUnderscoreToCamelCase" value="true"/>-->
+        <!--自动对每条数据进行绑定。-->
+        <setting name="safeRowBoundsEnabled" value="true"/>
+        <!--禁用二级缓存。设置成【不缓存】我们的SQL语句。-->
+        <setting name="cacheEnabled" value="false"/>
+        <!--可以在我们插入一条语句的时候，自动为我们生成主键ID 。-->
+        <setting name="useGeneratedKeys" value="true"/>
+    </settings>
+    <!--<typeAliases>
+        &lt;!&ndash;表示指定包下的所有类都可以使用别名，只写一个单独的类名就可以代表写全了的类名。&ndash;&gt;
+        <package name="smt666.mall.model"/>
+       &lt;!&ndash;<typeAlias type="com.mmall.pojo.user.SysRole" alias="SysRole"/>&ndash;&gt;
+    </typeAliases>-->
+
+    <!--<plugins>
+        &lt;!&ndash;plugin它相当于是，我们可以在MyBatis做一些监听，
+        比如说，SQL执行时是怎样的，执行了多长的时间，
+        它就类似AOP的环绕通知，在SQL执行的前后分别做了拦截监听的工作。&ndash;&gt;
+			&lt;!&ndash; 自增策略是哪个数据库 &ndash;&gt;
+        <plugin interceptor="com.github.abel533.mapperhelper.MapperInterceptor">
+            &lt;!&ndash; 自增策略是哪个数据库 &ndash;&gt;
+            <property name="IDENTITY" value="MYSQL"/>
+            &lt;!&ndash; 实现扩展基础类 &ndash;&gt;
+            <property name="mappers" value="com.mmall.dao.TestMapper"/>
+        </plugin>
+    </plugins>-->
+
+    <!--<typeHandlers>
+        &lt;!&ndash;当我们在Java代码中的枚举的属性，无法和MySQL中字段进行映射的时候，
+        我们就可以通过这个typeHandler来处理：
+        原理：如果本地类无法与SQL查询出来的值进行映射的时候，
+        我可以通过这个typeHandler将从数据库中查询出来的一个对象，转换成本地的一个对象。
+        这种情况，主要出现在如果在类里面定义枚举类型时，枚举无法映射的情况下，
+        我们就需要再此处写这个typeHandler来实现映射的关系。&ndash;&gt;
+        <typeHandler handler=""/>
+    </typeHandlers>-->
+</configuration>

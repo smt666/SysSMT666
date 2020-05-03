@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         id="UserPermission" version="2.5">
+  <display-name>Archetype Created Web Application</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+  <!--首先我们需要为spring环境，指定一个Listener监听器。
+  这个ContextCleanupListener它负责监听上下文的spring Bean的加载。-->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextCleanupListener</listener-class>
+  </listener>
+
+  <!--有了Listener之后，我们就需要指定一些相关的配置。-->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <!--这里我们需要指定spring bean加载的配置文件的所在目录。-->
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
+
+  <!--===========================================================================================-->
+  <!--我们再来指定spring MVC的bean相关的配置。-->
+  <!--在配置SpringMVC的时候，我们首先指定一个Servlet 。-->
+  <!--这个配置实际上就是用来处理项目中的所有请求的。-->
+  <servlet>
+    <servlet-name>springMVC</servlet-name><!--name我们可以自定义。-->
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>springMVC</servlet-name>
+    <url-pattern>/</url-pattern><!--【/】拦截静态资源。【/*】拦截任何请求，包括静态与动态请求。-->
+  </servlet-mapping>
+  <!--当我们配置DispatcherServlet完毕之后，我们需要在项目的默认WEB-INF目录下，
+  创建一个按照此处servlet-name命令的值所对应的XML配置文件：
+      需要注意的是，这个文件的前缀，必须一致：springMVC ,
+      并且文件的后面部分【-servlet.xml】是固定的！
+      即：[springMVC-servlet.xml]这个文件夹名称。
+   因为我们是在WEB-INF这个spring读取配置文件的默认目录下创建的XML文件，
+   所以，我们不需要特意指定这个xml文件的所在位置。
+        但是我们之前创建的[applicationContext.xml]文件是在resource目录下。
+        所以，我们希望spring读取到的话，那么就必须指定所在目录，
+        例如【《param-value>classpath:spring/applicationContext.xml《/param-value>】
+  这样进行配置后，springNVC就会自动读取到这个[springMVC-servlet.xml]XML文件了。-->
+  <!--===========================================================================================-->
+
+  <!--在我们处理完spring和spring MVC所需要的配置文件之后，
+  我们会在web.xml中，处理所有请求的中文乱码的统一配置（都设置成UTF-8字符集编码格式）。-->
+  <filter>
+    <filter-name>SMT666-AllRequestEncoding-UTF-8</filter-name><!--过滤器名称自定义-->
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name><!--encoding属性-->
+      <param-value>UTF-8</param-value><!--设置成使用UTF-8字符集编码的格式。-->
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name><!--forceEncoding属性，相当于：强制进行编码。-->
+      <param-value>true</param-value><!--true代表，强制使用UTF-8进行编码。-->
+    </init-param>
+  </filter>
+  ，<filter-mapping>
+  <filter-name>SMT666-AllRequestEncoding-UTF-8</filter-name>
+  <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+  <!--配置Druid 。即，我们将要指定哪一个Servlet去处理Druid的SQL请求。-->
+  <servlet>
+    <servlet-name>DruidStatServlet</servlet-name><!--自定义取名为 DruidStatServlet-->
+    <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+    <!--我们也可以配置Druid的登录用户名与密码。-->
+    <init-param>
+      <!--====当我们有配置此处用户名密码，那么再使用Druid时就需要登录才可以访问了。======-->
+      <param-name>loginUsername</param-name>
+      <param-value>druid</param-value><!--自定义用户名为druid-->
+    </init-param>
+    <init-param>
+      <param-name>loginPassword</param-name>
+      <param-value>druid</param-value><!--自定义密码为druid-->
+    </init-param>
+    <!--=========================================================================-->
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DruidStatServlet</servlet-name>
+    <!--我们在此处添加了这个【sys】前缀，是因为：如果将来我们希望对druid下面请求也做一个系统的拦截的话，那么：
+    我们就可以对sys路径下所有的请求都做一个拦截，进行权限校验。-->
+    <url-pattern>/sys/druid/*</url-pattern>
+  </servlet-mapping>
+
+  <!--配置好Druid之后，我们就开始配置Filter拦截器。它主要的告诉我们需要拦截哪些请求。-->
+  <filter>
+    <filter-name>DruidWebStatFilter</filter-name>
+    <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+    <!--在我们使用WebStatFilter的时候，我们也可以初始化一些参数。-->
+    <init-param>
+      <!--配置不进行处理的请求。-->
+      <param-name>exclusions</param-name>
+      <param-value>*.js,*.css,*.jpg,*.jpeg,*.exe,*.bat,*.png,*.gif,*.bmp,*.midi,*.mp3,*.ico,*.mp4,/sys/druid/*</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>DruidWebStatFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+</web-app>

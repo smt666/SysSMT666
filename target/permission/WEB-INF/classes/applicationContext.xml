@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+    <!-- 当前这个XML文件，主要是配置Spring相关的。
+    applicationContext    spring的上下文，我们需要配置的有DB数据库。 -->
+    <!--定义配置文件的变量所在的资源文件的路径。-->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <!--忽略掉不能被处理的配置。-->
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <!--从哪个地方获取到配置文件。-->
+        <property name="locations">
+            <list>
+                <value>classpath:configureFiles/jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--配置数据源-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close">
+        <property name="driverClassName" value="${db.driverClassName}"/>
+        <property name="url" value="${db.url}"/>
+        <property name="username" value="${db.dbLoginName}"/>
+        <property name="password" value="${db.dbLoginPwd}"/>
+        <!--启动数据库连接池时默认启动的连接对象为3个。-->
+        <property name="initialSize" value="3"/>
+        <!--最小允许可以维护3条连接的对象，多出来(的超过3条的)连接对象就会被关闭。-->
+        <property name="minIdle" value="3"/>
+        <!--定义当前连接池的（活跃数量）容量，即最大可以允许创建的总连接数量【在生产中需要与DBA数据库管理进行商议，按需设置】。
+        此处我们设置成20条，写死。-->
+        <property name="maxActive" value="20"/>
+        <!--一个连接的最长等待连接的时间，超时时间。1分钟。-->
+        <property name="maxWait" value="60000"/>
+        <!--配置自定义的Filter拦截器-->
+        <property name="filters" value="stat,wall"/>
+    </bean>
+    <!-- <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 定义MyBatis的SQL语句写在哪里。
+        当mybatis的xml文件和mapper接口不在相同包下时，需要用mapperLocations属性指定xml文件的路径。
+         *是个通配符，代表所有的文件，**代表所有目录下 -->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <!--<property name="mapperLocations" value="classpath*:mybatis/mapper/**/*.xml"/>-->
+    </bean>
+    <!--定义一个MapperScanner扫描。-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--mybatis扫描Java中的那些bean，即将要扫描那些用来操作数据库的包。-->
+        <property name="basePackage" value="smt666.mall.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <!--tx 事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--配置事务管理器。-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!--druid的配置-->
+    <!--配置Filter拦截器"stat"，这个stat拦截器主要是做一些监控数据库相关的。-->
+    <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+        <!--定义单条SQL语句处理时长为3000毫秒（即3秒），如果超过这个值，
+        那么我们就认为这个SQL需要进行优化处理了。-->
+        <property name="slowSqlMillis" value="3000"/>
+        <!--表示一旦发现了这种慢SQL那么就记录下来。-->
+        <property name="logSlowSql" value="true"/>
+        <!--我们配置这个参数，是为了当我们在记录SQL的过程中，如果SQL较多，
+        那么配置这个参数就可以使得记录的SQL格式比较整洁，提高开放人员阅读性。-->
+        <property name="mergeSql" value="true"/>
+    </bean>
+    <!--配置wall-->
+    <bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter">
+        <!--表示我们将要监控的DB数据库是MySQL这个数据库产品。-->
+        <property name="dbType" value="mysql"/>
+    </bean>
+
+</beans>

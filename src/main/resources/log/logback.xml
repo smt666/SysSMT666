@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   scan="true"  表示配置文件如果发生了改变，那么它将会重新加载配置文件，默认值设置成true 。
+   scanPeriod=""  设置配置文件是否有修改的时间间隔。如果没有那么就需要指定时间单位，默认毫秒，我们设置成1分钟。
+        注意这个scanPeriod参数的配置，只有当scan="true"的时候才会生效。
+        如果我们仅仅指定了一个数字60的话，那么默认单位毫秒，那么就表示60毫秒。
+        我们也可以为它指定一个时间单位，用空格分隔： scanPeriod="60 seconds"就表示60秒了。
+-->
+<configuration scan="true" scanPeriod="60 seconds">
+    <!--<property name="encoding" value="UTF-8"/>
+    <property name="encoding2" value="GBK"/>-->
+    <!--在标签中，允许有多个appender标签，允许有多个logger标签。但是只允许有唯一一个root标签-->
+
+    <!--1. 每一个appender都可以定义一种日志数据的输出形式。
+    name="STDOUT"   标准化输出
+    class中的类，表示把日志文件直接输出打印在控制台上。
+        当我们启动了Tomcat，logback就会日志写入到Catalina.out的文件里面去。
+        通常在我们的项目里面，所有的日志都是会输出到Catalina.out的文件里面一份的，
+        然后特殊日志就会被记录到特殊的文件中一份。
+    -->
+   <!-- <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!--当我们在指定了一个appender的时候，我们通常会为这个appender指定一个日式输出的格式。-->
+        <encoder>
+            <!--pattern就是日志的格式
+            在pattern里面需要写入许多的关键字：
+            %d{yyyy-MM-dd HH:mm:ss.SSS}     日期的配置，年-月-日 时:分:秒.毫秒值
+            [%thread]       配置当前的进程
+            %-5level        配置日志的级别，使用%进行配置，-5代表级别从左减去5个字符的宽度。这样做可以让日志更加整洁易于阅读。
+            %logger - %msg%n      【%logger】表示记录日志的名称，日志名称记录完毕后接下来【%msg】记录的
+                                   就是日志信息，日志信息记录完毕后【%n】就表示一个换行符，并且继续按照这个格式进行输出。
+        至此，我们最基础的一个appender就已经配置完成了。-->
+            <pattern>%d{yyyy-MM-dd HH.mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <!--<charset class="java.nio.charset.Charset">UTF-8</charset>-->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--2. 通常我们会定义多个不同的logger名称，这个名称可以依据类名或其他自定义。
+    通常我们会给logger指定一个相对应的appender ，这样的话，
+    我们每创建一个logger就指定对应的一个appender ，表示一什么形式进行指定的日志的输出。-->
+    <!--<logger>
+        此次我们没有指定logger，没有指定logger意味着，
+        我们就没有办法去指定logger对应的appender，因此：
+        我们目前配置的这个appender是对所有的logger都有效的。
+        相当于是在系统中，使用了logback的logger进行日志记录时，
+        都只会按照我们配置的一个appender进行记录并输出日志信息。
+    </logger>-->
+
+
+   <!-- &lt;!&ndash;第2个appender ,可以根据时间进行压缩日志的appender 。&ndash;&gt;
+    <appender name="permission" class="ch.qos.logback.core.rolling.RollingFilterAppender">
+        &lt;!&ndash;当Tomcat启动时，我们的catalina.home这个变量就会
+        直接定义到tomcat主目录上面去，这样一来就会找到tomcat文件
+        夹目录下的logs目录文件夹中，然后生产一个permission.log文件
+        来记录我们当前这个appender的日志信息。
+        &ndash;&gt;
+        <file>${catalina.home}/logs/userPermission.log</file>
+        &lt;!&ndash;接着我们来定义文件压缩的规则。此处定义的这个TimeBasedRollingPolicy类就表示我们会依据时间来压缩日志。&ndash;&gt;
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            &lt;!&ndash;根据配置的时间格式对之前定义好的log进行压缩，每次压缩之后的日志就是此处定义的这种格式的文件名。&ndash;&gt;
+            <FileNamePattern>${catalina.home}/logs/userPermission.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        &lt;!&ndash;在定义好了rollingPolicy后，我们需要指定日志的每一行的格式。此处按照【年-月-日 时:分:秒.毫秒值】这样的格式。&ndash;&gt;
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH.mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </layout>
+    </appender>
+    <logger name="logger2" level="INFO">
+        <appender-ref ref="permission"/>
+    </logger>-->
+
+    <!--3. root它告诉我们，应该使用什么样的级别去接收日志。
+        TRACE < DEBUG < INFO < WARN < ERROR  日志级别排序，从低到高
+    通常是级别有：TRACE,DEBUG,INFO,WARN,ERROR等等级别（ERROR级别最高），通常我们会配置成INFO级别。
+    当我们配置成INFO时，那么DEBUG和TRACE级别的日志就不会再输出了。
+    即，低级别的日志不会输出（如果设置成了WARN，那么比WARN级别小的3个级别的日志都不会再输出）-->
+    <!-- level="INFO" 表示设置日志级别为INFO级别。-->
+    <root level="INFO">
+        <!--ref指向了刚刚设置了的appender 。
+                表示当前配置的日志会记录INFO级别以上的日志信息，并且按照指定格式输出到指定文件夹里面。-->
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<!-- 数据库驱动包位置 -->
+	<!--<classPathEntry location="/Users/jimin/Desktop/permission/generator/mysql-connector-java-5.1.34.jar" /> --><!-- 1 -->
+	<classPathEntry location="D:/IDEA_WORKSPACE/permission/generatorUtils/mysql-connector-java-5.1.34.jar" /> <!-- 第1处，实际的jar包路径。 -->
+	<context id="DB2Tables" targetRuntime="MyBatis3">
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		<!-- 数据库链接URL、用户名、密码 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://192.168.1.204:3306/sysuser?characterEncoding=utf8" userId="root" password="2453807X">  <!-- 2 -->
+		</jdbcConnection>
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+		<!-- 生成模型的包名和位置 --> <!-- 3 --><!--targetProject代表是的，生成的文件存放在哪个位置，所我们必须提前准备好这个自定义的src目录。-->
+		<javaModelGenerator targetPackage="smt666.mall.model" targetProject="D:/IDEA_WORKSPACE/permission/generatorUtils/src">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		<!-- 生成的映射文件包名和位置 --> <!-- 4 此处这个可以省略-->
+		<sqlMapGenerator targetPackage="smt666.mall.mapper" targetProject="D:/IDEA_WORKSPACE/permission/generatorUtils/src">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+		<!-- 生成DAO的包名和位置 --> <!-- 5 -->
+		<javaClientGenerator type="XMLMAPPER" targetPackage="smt666.mall.dao" targetProject="D:/IDEA_WORKSPACE/permission/generatorUtils/src">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		<!-- 要把那些表生成对应的Java类。(更改tableName和domainObjectName就可以) --><!-- 6 -->
+		<!--
+		tableName="tb_name"  指定将要生成Java POJO类所依据的数据表的名称。
+		domainObjectName="JavaClassObjectName"  生成后的Java POJO实体类的类名。
+		enableCountByExample="false"  代表不生成CRUD增删改查的增加或者插入数据的方法，直接默认值false即可。
+		enableUpdateByExample="false" 代表不生成CRUD增删改查的修改数据的方法，直接默认值false即可。
+		enableDeleteByExample="false" 代表不生成CRUD增删改查的删除数据的方法，直接默认值false即可。
+		enableSelectByExample="false" 代表不生成CRUD增删改查的查询数据的方法，直接默认值false即可。
+		selectByExampleQueryId="false" 代表不生成CRUD增删改查的依据ID注解查询数据的方法，直接默认值false即可。
+		-->
+		<table tableName="sys_user" domainObjectName="SysUser" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
+		<table tableName="sys_dept" domainObjectName="SysDept" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
+		<table tableName="sys_acl" domainObjectName="SysAcl" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
+		<table tableName="sys_acl_module" domainObjectName="SysAclModule" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
+		<table tableName="sys_role" domainObjectName="SysRole" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
+		<table tableName="sys_role_acl" domainObjectName="SysRoleAcl" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
+		<table tableName="sys_role_user" domainObjectName="SysRoleUser" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
+		<table tableName="sys_log" domainObjectName="SysLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
+	</context>
+</generatorConfiguration>
