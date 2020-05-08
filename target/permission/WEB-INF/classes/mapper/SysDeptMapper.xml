@@ -138,4 +138,48 @@
       operate_ip = #{operateIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!--=========================================================================================-->
+  <!--获取到全部的Dept部门信息Tree树。-->
+  <select id="getAllDept" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_dept
+  </select>
+  <!--========================================-->
+  <select id="getChildDeptListByLevel" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_dept
+    where level like #{level} || '.%'
+  </select>
+  <!--========================================-->
+  <!-- 批量更新。 -->
+  <update id="batchUpdateLevel" parameterType="map">
+    <foreach collection="sysDeptList" item="sysDept" separator=";">
+      update sys_dept
+      set level = #{dept.level}
+      where id = #{dept.id}
+    </foreach>
+  </update>
+  <!--========================================-->
+  <!--如果id不为null空值的话，那么就依据上级部门ID来统计表中的总记录数量：有几条数据（包括null的记录）。-->
+  <select id="countByNameAndParentId" parameterType="map" resultType="int">
+    select count(1)
+    from sys_dept
+    where name = #{name}
+    <if test="parentId != null">
+      and parent_id = #{parentId}
+    </if>
+    <if test="id != null">
+      and id != #{id}
+    </if>
+  </select>
+  <!--========================================-->
+  <select id="countByParentId" parameterType="int" resultType="int">
+    SELECT count(1)
+    FROM sys_dept
+    WHERE parent_id = #{deptId}
+  </select>
+  <!--========================================-->
+  <!--========================================-->
 </mapper>

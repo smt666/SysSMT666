@@ -25,6 +25,13 @@
         <bean class="smt666.common.util.HttpRequestInterceptor"/>
     </mvc:interceptors>
 
+    <!--使得这些资源允许被访问到。-->
+    <mvc:resources location="/js/" mapping="/js/**"/>
+    <mvc:resources location="/css/" mapping="/css/**"/>
+    <mvc:resources location="/bootstrap3.3.5/" mapping="/bootstrap3.3.5/**"/>
+    <mvc:resources location="/assets/" mapping="/assets/**"/>
+    <mvc:resources location="/ztree/" mapping="/ztree/**"/>
+
     <!--在我们写好ApplicationContextHelper类并且添加了【@Component("applicationContextHelper")】注解后，在此处配置，
         我们让这个类在项目启动时就马上被加载，所以设置lazy-init属性的值为false代表，一启动就加载。-->
     <bean class="smt666.common.util.ApplicationContextHelper" lazy-init="false"/>
@@ -50,7 +57,7 @@
     <!--我们对JSP页面做一些配置。【内部资源视图解析器】-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!--参数1【prefix】，项目路径的前缀。配置的是：文件所在的路径，表示这文件是从哪里开始的。-->
-        <property name="prefix" value="/views/"/>
+        <property name="prefix" value="/WEB-INF/views/"/>
         <!--参数2【suffix】，文件的后缀。此处表示我们将通过.jsp后缀的文件来渲染页面。-->
         <property name="suffix" value=".jsp"/>
     </bean>

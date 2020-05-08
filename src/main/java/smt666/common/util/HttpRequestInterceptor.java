@@ -60,6 +60,7 @@ public class HttpRequestInterceptor extends HandlerInterceptorAdapter {
         long startTime = (long) request.getAttribute(START_TIME);
         // 然后记录当前时间，即：请求已经处理完毕的时间。
         long endTime = System.currentTimeMillis();
+        removeThreadLocalResources();
         // 我们把获取的uri和参数，都打印出来。
         log.info("OK[request handled Finished]\n\t\t请求的URI为url:\t\t{}\n\t\t请求参数为params:\t{}\n\t\t处理请求总耗时cost:\t{}毫秒\n", uri, JsonMapper.objectToString(parameterMap), endTime-startTime);
     }
@@ -82,7 +83,15 @@ public class HttpRequestInterceptor extends HandlerInterceptorAdapter {
         long startTime = (long) request.getAttribute(START_TIME);
         // 然后记录当前时间，即：请求已经处理完毕的时间。
         long endTime = System.currentTimeMillis();
+        removeThreadLocalResources();
         // 我们把获取的uri和参数，都打印出来。
         log.info("Complete[request handled Finished]\n\t\t请求的URI为url:\t\t{}\n\t\t请求参数为params:\t{}\n\t\t处理请求总耗时cost:\t{}毫秒\n", uri, JsonMapper.objectToString(parameterMap), endTime-startTime);
+    }
+
+    /**
+     * 关闭&nbsp;<font color="#f0eb16" size=5>ThreadLocal</font>&nbsp;本地线程资源。
+     */
+    public void removeThreadLocalResources() {
+        RequestHolder.remove();
     }
 }

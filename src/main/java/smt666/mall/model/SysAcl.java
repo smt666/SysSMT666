@@ -7,6 +7,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+/**
+ * 【@EqualsAndHashCode(of = {"id"})】注解，
+ * 当我们想做equals或者hashCode的判断时，我们就完全取决于它们的id属性值是否相同。
+ * 如果id值相同，那么就表示他俩是相同的类。这样一来，
+ * 我们在做：【Set<SysAcl> aclSet调用addAll(Set<Integer>集合userAclIdSet)】的时候，
+ * 对于相同ID的值，就不会去遍历多个了。
+ */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

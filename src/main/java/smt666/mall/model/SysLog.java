@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+/**
+ * @author 27140
+ */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,7 +17,7 @@ public class SysLog {
 
     private Integer type;
 
-    private Integer targetId;
+    private Integer targetId = 1;
 
     private String operator;
 

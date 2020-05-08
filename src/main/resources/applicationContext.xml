@@ -19,7 +19,7 @@
             </list>
         </property>
     </bean>
-
+    <import resource="redis.xml" />
     <!--配置数据源-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
           init-method="init" destroy-method="close">

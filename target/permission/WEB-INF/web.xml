@@ -12,7 +12,7 @@
   <!--首先我们需要为spring环境，指定一个Listener监听器。
   这个ContextCleanupListener它负责监听上下文的spring Bean的加载。-->
   <listener>
-    <listener-class>org.springframework.web.context.ContextCleanupListener</listener-class>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
   <!--有了Listener之后，我们就需要指定一些相关的配置。-->
@@ -61,10 +61,10 @@
       <param-value>true</param-value><!--true代表，强制使用UTF-8进行编码。-->
     </init-param>
   </filter>
-  ，<filter-mapping>
-  <filter-name>SMT666-AllRequestEncoding-UTF-8</filter-name>
-  <url-pattern>/*</url-pattern>
-</filter-mapping>
+    <filter-mapping>
+    <filter-name>SMT666-AllRequestEncoding-UTF-8</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
   <!--配置Druid 。即，我们将要指定哪一个Servlet去处理Druid的SQL请求。-->
   <servlet>
@@ -103,6 +103,35 @@
   <filter-mapping>
     <filter-name>DruidWebStatFilter</filter-name>
     <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <filter>
+    <filter-name>LoginFilter</filter-name>
+    <filter-class>smt666.common.filter.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <!--表示只会对 /sys/或者/admin/开头的请求继续登录拦截的操作。-->
+    <url-pattern>/sys/*</url-pattern>
+    <url-pattern>/admin/*</url-pattern>
+  </filter-mapping>
+
+  <filter>
+    <filter-name>aclControlFilter</filter-name>
+    <filter-class>smt666.common.filter.AclControlFilter</filter-class>
+    <init-param>
+      <param-name>targetFilterLifecycle</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>exclusionUrls</param-name>
+      <param-value>/sys/user/noAuth.page,/login.page</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>aclControlFilter</filter-name>
+    <url-pattern>/sys/*</url-pattern>
+    <url-pattern>/admin/*</url-pattern>
   </filter-mapping>
 
 </web-app>

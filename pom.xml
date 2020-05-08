@@ -33,6 +33,9 @@
     <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
     <commons-collections.version>3.2.2</commons-collections.version>
     <commons-codec.version>1.10</commons-codec.version>
+    <commons-lang3.version>3.5</commons-lang3.version>
+    <commons-email.version>1.4</commons-email.version>
+    <jedis.version>2.8.1</jedis.version>
   </properties>
 
   <dependencies>
@@ -162,9 +165,25 @@
       <version>${commons-codec.version}</version>
     </dependency>
     <!--=============================================================================-->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${commons-lang3.version}</version>
+    </dependency>
     <!--=============================================================================-->
+    <dependency><!-- email -->
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-email</artifactId>
+      <version>${commons-email.version}</version>
+    </dependency>
     <!--=============================================================================-->
-    <!--=============================================================================-->
+    <!-- redis -->
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>${jedis.version}</version>
+      <type>jar</type>
+    </dependency>
     <!--=============================================================================-->
   </dependencies>
 

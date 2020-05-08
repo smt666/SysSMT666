@@ -6,7 +6,8 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.Map;
 
-/**&nbsp;&nbsp;&nbsp;&nbsp;
+/**<font color="#f0eb16" size=5>【处理请求的操作】是否成功处理</font><br/>
+ * &nbsp;&nbsp;&nbsp;&nbsp;
  * 在项目中，如果获取到的数据是JSON格式返回的数据时，
  * 这个返回值一定是一个JsonResult类型的返回值。<br/>
  * [@Getter]利用IDEA-Lombok使用这个注解来自动创建成员属性的Get方法。<br/>
@@ -17,7 +18,8 @@ import java.util.Map;
 @Setter
 public class JsonResult {
     /**
-     * &nbsp;&nbsp;&nbsp;&nbsp;当我们正常返回了JsonResult类型的返回值时，我们就会先判断这个ret是true还是false 。<br/>
+     * <font color="#4aa6d2" size=4.5><font color="#f0eb16" size=5>正常返回</font>了数据：&nbsp;ret = <font color="#f0eb16" size=6>true</font>&nbsp;，为false代表响应异常返回了！</font>
+     * <br/>&nbsp;&nbsp;&nbsp;&nbsp;当我们正常返回了JsonResult类型的返回值时，我们就会先判断这个ret是true还是false 。<br/>
      * 如果是true代表，当前请求它是正常处理的。
      */
     private boolean ret;
