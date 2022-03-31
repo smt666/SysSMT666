@@ -18,7 +18,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <!--管理统一jar包-->
-    <springframework.version>4.3.10.RELEASE</springframework.version>
+    <springframework.version>5.3.18</springframework.version>
     <mysql.version>5.1.38</mysql.version>
     <mybatis.version>3.4.6</mybatis.version>
     <mybatis-spring.version>1.3.2</mybatis-spring.version>
