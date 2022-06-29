@@ -34,7 +34,7 @@
     <commons-collections.version>3.2.2</commons-collections.version>
     <commons-codec.version>1.10</commons-codec.version>
     <commons-lang3.version>3.5</commons-lang3.version>
-    <commons-email.version>1.4</commons-email.version>
+    <commons-email.version>1.5</commons-email.version>
     <jedis.version>2.8.1</jedis.version>
   </properties>
 
